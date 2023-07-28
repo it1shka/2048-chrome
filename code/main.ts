@@ -25,16 +25,76 @@ class Game2048 {
 
   private bindKeys = () => {
     Keyboard.addBinding('r', this.startGame)
-    Keyboard.addMultikeyBinding(['w', 'W', 'ArrowUp'],    this.moveUp)
-    Keyboard.addMultikeyBinding(['d', 'D', 'ArrowRight'], this.moveRight)
-    Keyboard.addMultikeyBinding(['s', 'S', 'ArrowDown'],  this.moveDown)
-    Keyboard.addMultikeyBinding(['a', 'A', 'ArrowLeft'],  this.moveLeft)
+    Keyboard.addMultikeyBinding(['w', 'W', 'ArrowUp'   ],    this.moveUp   )
+    Keyboard.addMultikeyBinding(['d', 'D', 'ArrowRight'],    this.moveRight)
+    Keyboard.addMultikeyBinding(['s', 'S', 'ArrowDown' ],    this.moveDown )
+    Keyboard.addMultikeyBinding(['a', 'A', 'ArrowLeft' ],    this.moveLeft )
   }
 
-  private moveUp = () => {}
-  private moveRight = () => {}
-  private moveDown = () => {}
-  private moveLeft = () => {}
+  private moveUp = () => {
+    for (let col = 0; col < this.elements.length; col++) {
+      for (let row = 1; row < this.elements.length; row++) {
+
+        const element = this.elements[row][col]
+        if (!element) continue
+
+        let moveIndex = row
+        while (true) {
+          if (moveIndex <= 0) break
+          const currentElement = this.elements[moveIndex][col]
+          if (currentElement !== element && currentElement && currentElement.textContent === element.textContent) break
+          const nextElement = this.elements[moveIndex - 1][col]
+          if (nextElement && nextElement.textContent !== element.textContent) break
+          moveIndex--
+        }
+
+        if (moveIndex === row) continue
+        this.moveElement(row, col, moveIndex, col)        
+      }
+    }
+    this.spawnNumbers(1)
+  }
+
+  private moveRight = () => {
+
+  }
+
+  private moveDown = () => {
+
+  }
+
+  private moveLeft = () => {
+
+  }
+
+  private moveElement = (
+    fromRow: number, fromCol: number,
+    toRow: number, toCol: number
+  ) => {
+    const fromElement = this.elements[fromRow][fromCol]!
+    this.elements[fromRow][fromCol] = null
+    this.translateElement(fromElement, toRow, toCol)
+    const toElement = this.elements[toRow][toCol]
+
+    if (!toElement) { // empty space
+      this.elements[toRow][toCol] = fromElement
+      return
+    } 
+
+    // increase existing
+    toElement.textContent = String(Number(fromElement.textContent) * 2)
+    colorBoardNumber(toElement)
+    setTimeout(() => fromElement.remove(), 300)
+  }
+
+  private translateElement = (
+    element: HTMLElement,
+    row: number, column: number
+  ) => {
+    const [top, left] = this.pivots[row][column]
+    element.style.top = `${top}px`
+    element.style.left = `${left}px`
+  }
 
   private getFreeSpace = () => {
     const space = new Array<readonly [number, number]>()
@@ -49,28 +109,31 @@ class Game2048 {
     return space
   }
 
-  private spawnNumbers = async (amount: number) => {
+  private spawnNumbers = (amount: number) => {
     const freeSpace = this.getFreeSpace()
     const chosenSpace = sample(freeSpace, amount)
     const spawned = new Array<HTMLElement>()
+
     for (const [row, col] of chosenSpace) {
+      // creating an element and adding some classes
       const numberElement = document.createElement('div')
       numberElement.classList.add('board-number', 'inactive')
-      const [top, left] = this.pivots[row][col]
-      numberElement.style.top = `${top}px`
-      numberElement.style.left = `${left}px`
-      const numberValue = randomElement(['2', '4'])
-      numberElement.textContent = numberValue
-      numberElement.setAttribute('value', numberValue)
+      // setting the position
+      this.translateElement(numberElement, row, col)
+      // setting the value and coloring
+      numberElement.textContent = randomElement(['2', '4'])
       colorBoardNumber(numberElement)
 
       this.elements[row][col] = numberElement
       document.body.appendChild(numberElement)
       spawned.push(numberElement)
     }
-    await sleep(10)
-    spawned.forEach(element => {
-      element.classList.remove('inactive')
+
+    // animation
+    setInterval(() => {
+      spawned.forEach(element => {
+        element.classList.remove('inactive')
+      })
     })
   }
 

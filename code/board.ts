@@ -52,7 +52,7 @@ export function getBoardPivots(boardElement: HTMLElement) {
 }
 
 export function colorBoardNumber(numberElement: HTMLElement) {
-  const numberValue = numberElement.getAttribute('value')
+  const numberValue = numberElement.textContent
   const color = ((): string => {
     switch (numberValue) {
       case '2':    return '#ebae34'
