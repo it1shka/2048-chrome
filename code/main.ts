@@ -145,7 +145,9 @@ class Game2048 {
     } 
 
     // increase existing
-    toElement.textContent = String(Number(fromElement.textContent) * 2)
+    const newValue = String(Number(fromElement.textContent) * 2)
+    if (newValue === '2048') alert('You got 2048!')
+    toElement.textContent = newValue
     colorBoardNumber(toElement)
     setTimeout(() => fromElement.remove(), 300)
   }
