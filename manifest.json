@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "2048 Game",
+  "version": "1.0.1",
+  "version_name": "Alpha",
+  "description": "2048 Game implemented as Google Chrome extension",
+  "author": "Tikhon Belousov",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "2048 Game"
+  }
+}

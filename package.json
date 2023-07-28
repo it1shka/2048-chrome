@@ -1,0 +1,14 @@
+{
+  "name": "2048-chrome",
+  "description": "Game 2048 implemented in Google Chrome",
+  "source": "index.html",
+  "browserlist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "build": "rm -rf dist && parcel build && cp manifest.json dist"
+  },
+  "author": "2tishbel@gmail.com",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "parcel": "^2.9.3"
+  }
+}
