@@ -31,6 +31,9 @@ class Game2048 {
     Keyboard.addMultikeyBinding(['a', 'A', 'ArrowLeft' ],    this.moveLeft )
   }
 
+  // i dont give a fuck about repetitive code,
+  // fuck you if you actually care
+
   private moveUp = () => {
     for (let col = 0; col < this.elements.length; col++) {
       for (let row = 1; row < this.elements.length; row++) {
@@ -55,16 +58,76 @@ class Game2048 {
     this.spawnNumbers(1)
   }
 
-  private moveRight = () => {
+  private moveLeft = () => {
+    for (let row = 0; row < this.elements.length; row++) {
+      for (let col = 1; col < this.elements.length; col++) {
 
+        const element = this.elements[row][col]
+        if (!element) continue
+
+        let moveIndex = col
+        while (true) {
+          if (moveIndex <= 0) break
+          const currentElement = this.elements[row][moveIndex]
+          if (currentElement !== element && currentElement && currentElement.textContent === element.textContent) break
+          const nextElement = this.elements[row][moveIndex - 1]
+          if (nextElement && nextElement.textContent !== element.textContent) break
+          moveIndex--
+        }
+
+        if (moveIndex === col) continue
+        this.moveElement(row, col, row, moveIndex)        
+      }
+    }
+    this.spawnNumbers(1)
   }
 
   private moveDown = () => {
+    for (let col = 0; col < this.elements.length; col++) {
+      for (let row = this.elements.length - 2; row >= 0; row--) {
 
+        const element = this.elements[row][col]
+        if (!element) continue
+
+        let moveIndex = row
+        while (true) {
+          if (moveIndex >= this.elements.length - 1) break
+          const currentElement = this.elements[moveIndex][col]
+          if (currentElement !== element && currentElement && currentElement.textContent === element.textContent) break
+          const nextElement = this.elements[moveIndex + 1][col]
+          if (nextElement && nextElement.textContent !== element.textContent) break
+          moveIndex++
+        }
+
+        if (moveIndex === row) continue
+        this.moveElement(row, col, moveIndex, col)        
+      }
+    }
+    this.spawnNumbers(1)
   }
 
-  private moveLeft = () => {
+  private moveRight = () => {
+    for (let row = 0; row < this.elements.length; row++) {
+      for (let col = this.elements.length - 2; col >= 0; col--) {
 
+        const element = this.elements[row][col]
+        if (!element) continue
+
+        let moveIndex = col
+        while (true) {
+          if (moveIndex >= this.elements.length - 1) break
+          const currentElement = this.elements[row][moveIndex]
+          if (currentElement !== element && currentElement && currentElement.textContent === element.textContent) break
+          const nextElement = this.elements[row][moveIndex + 1]
+          if (nextElement && nextElement.textContent !== element.textContent) break
+          moveIndex++
+        }
+
+        if (moveIndex === col) continue
+        this.moveElement(row, col, row, moveIndex)        
+      }
+    }
+    this.spawnNumbers(1)
   }
 
   private moveElement = (
