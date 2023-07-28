@@ -7,7 +7,7 @@
     "build": "rm -rf dist && parcel build && cp manifest.json dist"
   },
   "author": "2tishbel@gmail.com",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "parcel": "^2.9.3"
   },
