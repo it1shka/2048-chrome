@@ -50,3 +50,23 @@ export function getBoardPivots(boardElement: HTMLElement) {
 
   return pivots
 }
+
+export function colorBoardNumber(numberElement: HTMLElement) {
+  const numberValue = numberElement.getAttribute('value')
+  const color = ((): string => {
+    switch (numberValue) {
+      case '2':    return '#ebae34'
+      case '4':    return '#c99428'
+      case '8':    return '#bf6021'
+      case '16':   return '#c73312'
+      case '32':   return '#b31e30'
+      case '64':   return '#bf3691'
+      case '128':  return '#9d2fc2'
+      case '256':  return '#4426c9'
+      case '512':  return '#1c58d9'
+      case '1024': return '#6ba10e'
+      default: return 'black'
+    }
+  })()
+  numberElement.style.backgroundColor = color
+}

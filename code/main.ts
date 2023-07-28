@@ -1,4 +1,4 @@
-import { createBoard, getBoardPivots, promptBoardSize } from './board'
+import { colorBoardNumber, createBoard, getBoardPivots, promptBoardSize } from './board'
 import { Matrix, matrixOf, sample, randomElement, Keyboard, sleep } from './utils'
 
 class Game2048 {
@@ -25,7 +25,16 @@ class Game2048 {
 
   private bindKeys = () => {
     Keyboard.addBinding('r', this.startGame)
+    Keyboard.addMultikeyBinding(['w', 'W', 'ArrowUp'],    this.moveUp)
+    Keyboard.addMultikeyBinding(['d', 'D', 'ArrowRight'], this.moveRight)
+    Keyboard.addMultikeyBinding(['s', 'S', 'ArrowDown'],  this.moveDown)
+    Keyboard.addMultikeyBinding(['a', 'A', 'ArrowLeft'],  this.moveLeft)
   }
+
+  private moveUp = () => {}
+  private moveRight = () => {}
+  private moveDown = () => {}
+  private moveLeft = () => {}
 
   private getFreeSpace = () => {
     const space = new Array<readonly [number, number]>()
@@ -53,6 +62,8 @@ class Game2048 {
       const numberValue = randomElement(['2', '4'])
       numberElement.textContent = numberValue
       numberElement.setAttribute('value', numberValue)
+      colorBoardNumber(numberElement)
+
       this.elements[row][col] = numberElement
       document.body.appendChild(numberElement)
       spawned.push(numberElement)

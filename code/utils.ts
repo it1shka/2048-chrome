@@ -57,9 +57,21 @@ export const Keyboard = new class {
     this.bindings[key].push(binding)
   }
 
+  addMultikeyBinding(keys: string[], binding: () => any) {
+    for (const key of keys) {
+      this.addBinding(key, binding)
+    }
+  }
+
   removeBinding(key: string, binding: () => any) {
     const maybeBucket = this.bindings[key]
     if (!maybeBucket) return false
     return removeElement(maybeBucket, binding)
+  }
+
+  removeMultikeyBinding(keys: string[], binding: () => any) {
+    for (const key of keys) {
+      this.removeBinding(key, binding)
+    }
   }
 }
