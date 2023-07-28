@@ -1,5 +1,3 @@
-import { emptyMatrix } from './utils'
-
 export function promptBoardSize() {
   let message = 'Please, select board size in range [4, 6]: '
   while (true) {
@@ -21,16 +19,34 @@ export function promptBoardSize() {
 }
 
 export function createBoard(size: number) {
-  const boardElements = emptyMatrix(size) as HTMLDivElement[][]
   const boardRoot = document.createElement('main')
   boardRoot.classList.add('board-root')
+  boardRoot.style.gridTemplateRows = `repeat(${size}, 1fr)`
+  boardRoot.style.gridTemplateColumns = `repeat(${size}, 1fr)`
   for (let i = 0; i < size * size; i++) {
     const boardCell = document.createElement('div')
     boardCell.classList.add('board-slot')
     boardRoot.appendChild(boardCell)
-    const [firstIdx, secondIdx] = [~~(i / size), i % size]
-    boardElements[firstIdx][secondIdx] = boardCell
   }
   document.body.appendChild(boardRoot)
-  return boardElements
+  return boardRoot
+}
+
+export function getBoardPivots(boardElement: HTMLElement) {
+  const children = Array.from(boardElement.children)
+  const size = Math.sqrt(children.length)
+  const pivots = new Array<Array<readonly [number, number]>>(size)
+
+  for (let row = 0; row < size; row++) {
+    const rowPivots = new Array<readonly [number, number]>(size)
+    for (let col = 0; col < size; col++) {
+      const index = row * size + col
+      const child = children[index]
+      const rect = child.getBoundingClientRect()
+      rowPivots[col] = [rect.top, rect.left]
+    }
+    pivots[row] = rowPivots
+  }
+
+  return pivots
 }

@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+$window-size: 600px;
+$board-cell-size: 75px;
+$board-cell-radius: 15px;
+
+@mixin board-cell {
+  width: $board-cell-size;
+  height: $board-cell-size;
+  border: 2px solid black;
+  border-radius: $board-cell-radius;
+}
+
+html {
+  width: $window-size;
+  height: $window-size;
+}
+
+body {
+  background-color: white;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.board-root {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  .board-slot {
+    @include board-cell;
+    background-color: #d5d5d5;
+  }
+}
+
+.board-number {
+  @include board-cell;
+  position: fixed;
+  color: white;
+  background-color: #ff5100;
+  font-size: 2em;
+  display: grid;
+  place-items: center;
+
+  transition: 0.1s all ease;
+  &.inactive {
+    transform: scale(0.3);
+  }
+}
