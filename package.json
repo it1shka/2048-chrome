@@ -4,7 +4,7 @@
   "source": "index.html",
   "browserlist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "build": "rm -rf dist && parcel build && cp manifest.json dist"
+    "build": "rm -rf dist && parcel build --no-source-maps && cp manifest.json dist && cp icon.png dist"
   },
   "author": "2tishbel@gmail.com",
   "license": "MIT",
